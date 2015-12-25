@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+ int ara[1005];
+int gcd(int m,int n)
+{
+    if(m%n==0)
+        return n;
+    else
+    return gcd(n,m%n);
+}
+int main()
+{
+    int a,k;
+    string s;
+    cin>>a;
+    getchar();
+    while(a--){
+       getline(cin,s);//aikane ara num golo string golo nibe
+       stringstream ss(s);//store korbe
+       int cnt=0;
+        while(ss>>ara[cnt]){
+                //printf("ara[%d]\n",cnt);
+            cnt++;
+
+        }
+        int ans=0;
+         for(int i=0;i<cnt;i++){
+                for(int j=i+1;j<cnt;j++){
+                        ans=max(ans,gcd(ara[i],ara[j]));
+        }
+    }
+            printf("%d\n",ans);
+    }
+    return 0;
+}
