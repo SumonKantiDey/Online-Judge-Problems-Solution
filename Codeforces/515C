@@ -1,0 +1,147 @@
+#include <bits//stdc++.h>
+
+using namespace std;
+
+#define MP make_pair
+#define PB push_back
+#define INF (int)1e9
+#define EPS 1e-9
+#define PI 3.1415926535897932384626433832795
+#define MOD 1000000007
+#define MAX 1000000
+#define all(x) x.begin(),x.end()
+#define sz(x) ((int)x.size())
+#define sqr(x) ((x)*(x))
+#define SET(x) memset(x, 0, sizeof(x))
+#define CLR(x) memset(x, -1, sizeof(x))
+#define xx first
+#define yy second
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define FOR(i,a,b) for(int i=(a);i<=(b);i++)
+#define FORD(i,a,b) for(int i=(a);i>=(b);i--)
+
+inline bool EQ(double a, double b) { return fabs(a-b) < 1e-9; }
+
+//Convert int to string
+template <typename T>
+string to_str(T str)
+{
+    stringstream stream;
+    stream << str;
+    return stream.str();
+}
+
+//Convert string to int
+template <typename T>
+int to_int(T num)
+{
+    int val;
+    stringstream stream;
+    stream << num;
+    stream >> val;
+    return val;
+}
+
+//Split String by Single Character Delimiter
+vector<string> split(const string& s, char delim)
+{
+    vector<string> elems;
+    stringstream ss(s);
+    string item;
+
+    while (getline(ss, item, delim))
+        elems.push_back(item);
+
+    return elems;
+}
+// this function goes to main for splitting
+//vector<string> words;
+//words = split("lorem_ipsum_dolor_sit_amet_no_tota_tacimates_delicata_eum", '_');
+//for(int i=0; i<words.size(); i++)
+//cout << words.at(i) << endl;
+
+
+//sort with respect to the second element in a pair !!
+//bool comp(const pair<int, int>&i, const pair<int, int>&j) {
+//        return i.second < j.second;
+//}
+//vector< pair<int, int> >v;
+//sort(v.begin(), v.end(), comp);
+
+const int dr [] = {-1, -1, 0, 1, 1, 1, 0, -1};
+const int dc [] = {0, 1, 1, 1, 0, -1, -1, -1};
+
+typedef pair<int, int> PII;
+typedef vector<int> VI;
+typedef vector<string> VS;
+typedef vector<PII> VII;
+typedef vector<VI> VVI;
+typedef map<int,int> MPII;
+typedef set<int> SETI;
+typedef multiset<int> MSETI;
+typedef long int i32;
+typedef unsigned long int ui32;
+typedef long long int i64;
+typedef unsigned long long int  ui64;
+
+int cnt[10];
+void add(int x, int f)
+{
+    for(int i=2; x/i; i=i*2){
+        cnt[2] += f*(x/i);
+    }
+
+    for(int i=3; x/i; i=i*3){
+        cnt[3] += f*(x/i);
+    }
+
+    for(int i=5; x/i; i=i*5){
+        cnt[5] += f*(x/i);
+    }
+
+    for(int i=7; x/i; i=i*7){
+        cnt[7] += f*(x/i);
+    }
+}
+
+int main()
+{
+    int n, m;
+  char s;
+    cin>>n;
+    for(int i=0; i<n; i++){
+            cin>>s;
+    int x = to_int(s);
+        add(x, 1);
+    }
+
+    int sz = cnt[7];
+    for(int i=0; i<sz; i++){
+        printf("7");
+        cnt[7]--;
+        cnt[5]--;
+        cnt[3]-=2;
+        cnt[2]-=4;
+    }
+    sz = cnt[5];
+    for(int i=0; i<sz; i++){
+        printf("5");
+        cnt[5]--;
+        cnt[3]--;
+        cnt[2]-=3;
+    }
+
+    sz = cnt[3];
+    for(int i=0; i<sz; i++){
+        printf("3");
+        cnt[3]--;
+        cnt[2]--;
+    }
+
+    sz = cnt[2];
+    for(int i=0; i<sz; i++){
+        printf("2");
+        cnt[2]--;
+    }
+    return 0;
+}
