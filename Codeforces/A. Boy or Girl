@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int a,b,c,k,cnt;
+    vector<char>ans;
+    char ch[105];
+    cin>>ch;
+    int len=strlen(ch);
+    for(int i=0;i<len;i++){
+          ans.push_back(ch[i]);
+    }
+    sort(ans.begin(),ans.end());
+    ans.resize (distance (ans.begin(), unique(ans.begin(),ans.end() ) ) );
+//    for(int j=0;j<ans.size();j++){
+//                cout<<ans[j]<<endl;
+//     }
+    cnt = ans.size();
+   // cout<<cnt<<endl;
+    if(cnt%2 == 0){
+        cout << "CHAT WITH HER!" << endl;
+        return 0;
+    }
+    cout<< "IGNORE HIM!" <<endl;
+        return 0;
+}
