@@ -1,0 +1,21 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    long long a,b,c,sum=1,sum1=1,sum2=1;
+    cin>>a;
+    long long h=(2*a)-2;
+    for(int i=1;i<=h;i++){
+        sum*=i;
+    }
+ //   cout<<sum<<endl;
+    for(int i=1;i<=a-1;i++){
+        sum1*=i;
+    }
+    long long k=(2*a-2)-(a-1);
+    for(int i=1;i<=k;i++){
+        sum2*=i;
+    }
+    long long res=sum/(sum1*sum2);
+    cout<<res;
+}
