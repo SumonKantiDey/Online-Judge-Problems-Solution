@@ -1,0 +1,21 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    string name[5]={ "Sheldon","Leonard", "Penny", "Rajesh", "Howard"};
+    int n,a;
+    while(scanf("%d",&n)==1){
+   // cin>>n;
+    int cnt=1,num=5;
+    while(n>num){
+        n-=num;
+        cnt<<=1;
+        num<<=1;
+     //   cout<<"cnt=="<<cnt<<"num=="<<num<<"  n===="<<n<<endl;
+    }
+    int res = (n-1)/cnt +1;
+   // cout<<res;
+    cout<<name[res-1]<<endl;
+    }
+    return 0;
+}
