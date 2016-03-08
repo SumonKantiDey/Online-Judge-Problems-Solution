@@ -1,0 +1,38 @@
+#include <iostream>
+#include <cstdio>
+#include <cmath>
+#include <cstring>
+#include <cassert>
+#include <algorithm>
+#include <vector>
+#include <map>
+using namespace std;
+
+int main()
+{
+    int a,n, num,cnt=0;
+    int skd[1005]={0};
+    cin>>n;
+    for(int i=0;i<n;i++){
+        cin>>num;
+        skd[num]++;
+    }
+    vector< int >ara;
+    while((int)ara.size()<n){
+     for(int i=0 ; i<1005 ; i++){
+       if(skd[i]!=0){
+             ara.push_back(i);
+           skd[i]--;
+       }
+    }
+    }
+//    for(int i=0;i<ara.size();i++){
+//        cout<<ara[i]<<" ";
+//    }
+    for(int i=0;i<ara.size()-1;i++){
+        if(ara[i]<ara[i+1])cnt++;
+    }
+    cout<<cnt;
+    return 0;
+}
+
