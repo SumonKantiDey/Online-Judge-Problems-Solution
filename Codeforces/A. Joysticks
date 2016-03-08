@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int a,b,c,d,tmp1,tmp2,cnt=0;
+    cin>>a>>b;
+    c=max(a,b);
+    d=min(a,b);
+    while(1){
+        c-=2;
+        d+=1;
+        if(c<=2){
+            swap(c,d);
+        }
+        if(c<2&&d<2){
+        cout<<"0"<<endl;
+        return 0;
+    }
+        cnt++;
+        if(c==0||d==0)break;
+    }
+    cout<<cnt;
+    return 0;
+}
