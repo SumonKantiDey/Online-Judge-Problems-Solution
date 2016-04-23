@@ -1,0 +1,75 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ui unsigned int
+unsigned  dp[5761556];
+int prime[5761556];//total prime 5761556 ar akto com ace 100000110 ato size ar modde
+int N=100000110;
+int status[3200000];
+int cnt;
+bool Check(int N,int pos){return (bool)(N & (1<<pos));}
+int Set(int N,int pos){	return N |= (1<<pos);}
+void sieve()
+{
+	 int i, j, sqrtN;
+     sqrtN = int( sqrt( N ) );
+     for( i = 3; i <= sqrtN; i += 2 )
+     {
+		 if( Check(status[i>>5],i&31)==0)
+		 {
+	 		 for( j = i*i; j <= N; j += (i<<1) )
+			 {
+				 status[j>>5]=Set(status[j>>5],j & 31)   ;
+	 		 }
+		 }
+	 }
+
+	 cnt=1;
+	 prime[0]=2;
+	 for(i=3;i<=N;i+=2){
+		 if( Check(status[i>>5],i&31)==0)
+	 	 prime[cnt++]=i;
+	 }
+}
+unsigned  pro(int x){
+        unsigned  ans,num;
+        ans = 1;
+
+        //cout<<prime[0];
+       for(int i=0;prime[i]*prime[i]<=x;i++){
+              num = x;
+            num = num/prime[i];
+            while(num>=prime[i]){
+             num /= prime[i];
+             ans = ans*prime[i];
+
+            }
+             //cout<<ans<<endl;
+         }
+
+
+   return ans;
+}
+int main()
+{
+      int n,tt,m=0;
+      unsigned  res;
+      sieve();
+   //   cout<<"total prime ace="<<cnt<<endl;
+    dp[0]=2;
+    for(int i=1; i<cnt; i++){
+        dp[i] = dp[i-1]*(unsigned int)prime[i];
+    }
+     scanf("%d",&tt);
+    while(tt--){
+            scanf("%d",&n);
+       res = pro(n);
+      // cout<<res<<endl;
+     int upper = upper_bound(prime,prime+cnt,n)-prime;
+     //cout<<"dp======="<<upper<<endl;
+     upper--;
+     res =res*dp[upper];
+       printf("Case %d: %u\n",++m,res);
+    }
+    return 0;
+}
