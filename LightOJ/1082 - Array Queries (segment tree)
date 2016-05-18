@@ -1,0 +1,72 @@
+//http://www.shafaetsplanet.com/planetcoding/?p=1557
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define mx 100005
+ll ara[mx];
+ll tree[mx*3];
+void build(ll node,ll b,ll e)//build array in 0(nlogn)...
+{
+    if(b == e)
+    {
+    tree[node] = ara[b];
+    return;
+    }
+    ll left = node*2;
+    ll right = node*2 + 1;
+    ll mid = (b+e)/2;
+    build(left,b,mid);
+    build(right,mid+1,e);
+    //tree[node] = tree[left]+tree[right];
+    tree[node] = min(tree[left],tree[right]);
+    //tree[node] = max(tree[left],tree[right]);
+}
+ll query(ll node,ll b,ll e,ll i,ll j)//query take 0(nlogn)....
+{
+    //if(i>e || j<b) return 0;
+     if(i>e || j<b) return 1000000000;
+    if(b >= i && e <= j) return tree[node];
+    ll left = node*2;
+    ll right = node*2 + 1;
+    ll mid = (b+e)/2;
+    ll p1 = query(left,b,mid,i,j);
+    ll p2 = query(right,mid+1,e,i,j);
+    //return p1+p2;
+      return min(p1,p2);
+     // return max(p1,p2);
+}
+//void update( node,ll b,ll e,ll i,ll newvalue)//query take 0(nlogn)....
+//{
+//    if(i > e || i < b) return ;
+//    if(b >= i && e <= i ){
+//        tree[node] = newvalue;
+//        return;
+//    }
+//    ll left = node*2;
+//    ll right = node*2 + 1;
+//    ll mid =(b+e)/2;
+//    update(left,b,mid,i,newvalue);
+//    update(right,mid+1,e,i,newvalue);
+//    tree[node]=tree[left]+tree[right];
+//    //tree[node] = min(tree[left],tree[right]);
+//    //tree[node] = max(tree[left],tree[right]);
+//
+//}
+int main()
+{
+    ll n,rr,pp,qq,T,cs=0;
+   scanf("%lld",&T);
+    while(T--){
+    scanf("%lld%lld",&n,&rr);
+    ara[0]=0;
+    for(ll i=1; i<=n; i++)scanf("%lld",&ara[i]);
+    build(1,1,n);
+    printf("Case %d:\n",++cs);
+    while(rr--){
+            scanf("%lld%lld",&qq,&pp);
+            printf("%lld\n",query(1,1,n,qq,pp));
+    }
+    }
+    return 0;
+}
+
