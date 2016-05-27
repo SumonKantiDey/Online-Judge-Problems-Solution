@@ -1,0 +1,34 @@
+ #include<bits/stdc++.h>
+  using namespace std;
+
+long long ara[25];
+void info(){
+      ara[0]=1;
+      for(int i=1; i<=20; i++){
+        ara[i]=i*ara[i-1];
+      }
+   }
+    int main () {
+       string a;
+      info();
+       long long tt,mul=1,l,k;
+       cin>>tt;
+       while(tt--){
+
+       cin>>a;
+       int n=a.size();
+       int ch[200]={0};
+       for(int i=0; a[i]; i++){
+          ch[a[i]]++;
+       }
+        mul=1;
+       for(int i=96; i<=150; i++){
+          l=ch[i];
+          mul*=ara[l];
+       }
+        k=ara[n]/mul;
+       printf("%lld\n",k);
+
+       }
+      return 0;
+    }
