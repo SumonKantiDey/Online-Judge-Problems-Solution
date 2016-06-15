@@ -1,0 +1,27 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int x,y,z,a,n,w,tt,temp,cnt=0,l=0;
+    vector<int>vv;
+    cin>>tt;
+    while(tt--){
+    cin>>n>>w;
+    for(int i=0; i<n; i++){
+        cin>>x>>y;
+        vv.push_back(y);//we do not think about x co ordinate because brush can move x co ordinate freely by rope
+    }
+    sort(vv.begin(),vv.end());
+   temp = vv[0]+w;//we should put the brush in initial position respect to y co_ordinate with add the brush width
+   cnt=1;
+   for(int i=1; i<n; i++){
+    if(vv[i] > temp){
+        temp = vv[i]+w;
+        cnt++;
+    }
+   }
+   printf("Case %d: %d\n",++l,cnt);
+   vv.clear();
+    }
+}
