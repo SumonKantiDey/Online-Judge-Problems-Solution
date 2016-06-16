@@ -1,0 +1,27 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define sc scanf
+#define pf printf
+#define ll long long
+int main()
+{
+  int tt;
+  cin>>tt;
+  for(int cs=1; cs<=tt; cs++)
+  {
+  ll a,b,c,mod,res,temp;
+  //cin>>a>>b;
+  sc("%lld%lld",&a,&b);
+  mod = b%a;//check mod for first time
+  res=1;// let res=1 ,suppose a = 7 ,b = 7 here b%a == 0 means mod==0
+  temp = b;
+  while(mod != 0)
+  {
+  b = ((b*10)%a + temp%a)%a;//if new value add
+  mod = b%a;//check mod after adding a value
+  res++;
+  }
+  pf("Case %d: %lld\n",cs,res);
+  }
+  return 0;
+}
