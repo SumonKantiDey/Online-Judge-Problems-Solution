@@ -1,0 +1,109 @@
+    //Prob Link http://lightoj.com/volume_showproblem.php?problem=1164
+    #include<bits/stdc++.h>
+    using namespace std;
+    #define MAX 100005
+    #define ll long long
+    //ll ara[MAX];
+    ll tree[MAX*4];
+    ll lazy[MAX*4];
+    //void build_tree(ll node,ll a,ll b)
+    //{
+    //    if(a > b)return;//Out of range
+    //    if(a == b)//Leaf node
+    //    {
+    //    tree[node] = ara[a];
+    //    return;
+    //    }
+    //    build_tree(node*2,a,(a+b)/2);//Leaf child
+    //    build_tree(node*2+1,(a+b)/2 + 1,b);//Right child
+    //    tree[node] = tree[node*2] + tree[node*2 + 1];// sum of present node
+    //}
+     
+    void update_tree(ll node,ll a,ll b,ll i,ll j,ll value)
+    {
+        if(lazy[node] != 0)//This node needs to be updated
+        {
+            tree[node] += (b-a+1)*lazy[node];//sum of present tree node and total leaf node
+            if(a != b)//when a and b not leaf node
+            {
+            lazy[node*2] +=lazy[node];//Define child as lazy
+            lazy[node*2 + 1] +=lazy[node];//Define child as lazy
+            }
+            lazy[node] = 0;//reset here
+        }
+        if(a>b || a>j || b<i)//Curent segment is not within range[i j]
+          return;
+        if(a >= i && b<=j)//segment is fully within range[i j]
+        {
+            tree[node] +=(b-a+1)*value;//sum of present tree node and total leaf node
+            if(a != b)//Not leaf node
+            {
+            lazy[node*2] += value;
+            lazy[node*2 + 1] += value;
+            }
+            return;
+        }
+        update_tree(node*2,a,(a+b)/2,i,j,value);//Update left child
+        update_tree(node*2 + 1,(a+b)/2 + 1,b,i,j,value);//Update right child
+        tree[node] = tree[node*2] + tree[node*2 + 1];//update sum of present node
+    }
+     
+    ll query_tree(ll node,ll a,ll b,ll i,ll j)
+    {
+        if(a>b || a>j || b<i)return 0;//out of range
+        if(lazy[node] != 0)
+        {
+            tree[node] += (b-a+1)*lazy[node];//sum of present tree node and total leaf node
+            if(a != b)//when a and b not leaf node
+            {
+            lazy[node*2] +=lazy[node];//Define child as lazy
+            lazy[node*2 + 1] +=lazy[node];//Define child as lazy
+            }
+            lazy[node] = 0;//reset here
+        }
+        if(a >=i && b<=j)return tree[node];
+        ll q1 = query_tree(node*2,a,(a+b)/2,i,j);//query left child
+        ll q2 = query_tree(node*2 + 1,(a+b)/2 + 1,b,i,j);//query right child
+        ll res = q1 + q2;
+        return res;
+    }
+    ll query_range(ll m,ll qs,ll qe)
+    {
+       return query_tree(1,0,m-1,qs,qe);//sum in rqnge[qs,qe]
+    }
+     
+    void update_range(ll m,ll us,ll ue,ll diff)
+    {
+      update_tree(1,0,m-1,us,ue,diff);//Increment rqnge[us,ue] by diff,here 0,m-1 represent current range
+    }
+    int main()
+    {
+        int tt,l=0;
+        //cin>>tt;
+        scanf("%lld",&tt);
+        while(tt--){
+         ll a,b,c,cm1,u1,u2,q1,q2,value;
+          memset(tree,0,sizeof(tree));
+          memset(lazy,0,sizeof(lazy));
+         //cin>>a>>b;
+         scanf("%lld %lld",&a,&b);
+         printf("Case %d:\n",++l);
+         while(b--){
+           // cin>>cm1;
+            scanf("%lld",&cm1);
+            if(cm1 == 0){
+              //  cin>>u1>>u2>>value;
+                scanf("%lld %lld %lld",&u1,&u2,&value);
+                update_tree(1,0,a-1,u1,u2,value);//Increment rqnge[0,4] by 1
+            }
+            else{
+                   // cin>>q1>>q2;
+                    scanf("%lld %lld",&q1,&q2);
+              printf("%lld\n",query_range(a,q1,q2));
+            }
+         }
+        }
+        return 0;
+    }
+     
+     
