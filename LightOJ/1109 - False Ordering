@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct sorta{
+int x;
+int y;
+};
+bool cmp(sorta m,sorta n){
+    if(m.x == n.x)
+    return m.y>n.y;//if first two index equal then sort second two element larger to smaller
+    else return m.x<n.x;//otherwise first two element sort with smaller to larger 
+}
+
+int main()
+{
+    int tt,cnt=0,l=0,num;
+    sorta data[1005];
+    for(int i=0; i<1000; i++){
+        for(int j=1; j<=i; j++){
+            if((i+1) % j == 0){
+                cnt++;
+            }
+        }
+        data[i].x = cnt;
+        data[i].y = i+1;
+        cnt=0;
+        }
+         // cout<<data[1].x<<"    "<<data[1].y<<endl;
+        sort(data,data+1000,cmp);
+        //cout<<data[1].x<<"    "<<data[1].y<<endl;
+    cin>>tt;
+    while(tt--){
+          cin>>num;
+
+          cout<<"Case "<<++l<<": "<<data[num-1].y<<endl;
+    }
+}
