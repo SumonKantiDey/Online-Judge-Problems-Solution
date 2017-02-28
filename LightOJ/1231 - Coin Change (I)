@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define MOD 100000007
+
+int coin[105],times[105],dp[105][1005];
+
+int main()
+{
+    int t,n,k,cs = 0;
+    scanf("%d",&t);
+    while(t--)
+    {
+        memset(dp,0,sizeof(dp));
+        scanf("%d %d",&n,&k);
+        for(int i = 1; i <= n; i++)  scanf(" %d",&coin[i]);
+
+        for(int i = 1; i <= n; i++)  scanf(" %d",&times[i]);
+
+        dp[0][0] = 1;
+        for(int i = 1; i <= n; i++)
+        {
+            for(int j = 0; j <= k; j++)
+            {
+                for(int t = 0; t <= times[i] && j+coin[i]*t <= k; t++)
+                {
+
+                    dp[i][j + coin[i]*t] += dp[i-1][j];
+                    dp[i][j + coin[i]*t] %= MOD;
+                    //cout << dp[i][j + coin[i]*t] <<endl;
+                }
+            }
+        }
+        printf("Case %d: %d\n",++cs,dp[n][k]);
+    }
+    return 0;
+}
