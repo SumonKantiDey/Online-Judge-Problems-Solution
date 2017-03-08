@@ -1,0 +1,56 @@
+#include <bits//stdc++.h>
+using namespace std;
+
+vector<int> g[105];
+bool seen[105];
+int n, e;
+int cnt;
+void dfs(int u)
+{
+    seen[u] = true;
+    cnt++;
+    for(int i = 0; i < g[u].size(); i++) {
+        int v = g[u][i];
+        if(!seen[v]) dfs(v);
+
+    }
+}
+
+int main()
+{
+    int n,T,t,mx,pos;
+    while(scanf("%d",&n) and n)
+    {
+
+        for(int i = 1 ; i <= n; i++)
+        {
+            scanf("%d",&T);
+
+            for(int j = 0; j<T; j++)
+            {
+               scanf("%d",&t);
+               g[i].push_back(t);
+            }
+
+        }
+        mx = -1;
+        for(int i = 1; i <= n; i++)
+        {
+            dfs(i);
+            //cout << "  cnt === " << i << " >>>>>>>>>>>>>>> " << cnt <<endl;
+            for(int j = 0; j <= n; j++) seen[j] = false;
+            if(cnt > mx)
+            {
+                mx = cnt;
+                pos = i;
+
+            }
+            cnt = 0;
+        }
+        printf("%d\n",pos);
+        vector<int> m[105];swap(m,g);
+    }
+
+    return 0;
+}
+
