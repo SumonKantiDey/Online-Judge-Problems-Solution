@@ -23,7 +23,7 @@ int main()
             if(ans >= c) lo = mid;
             else hi = mid;
         }
-        printf("Case %d: %.6f\n",cs,hi);
+        printf("Case %d: %.6lf\n",cs,hi);
  
     }
     return 0;
