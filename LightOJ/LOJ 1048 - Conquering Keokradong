@@ -125,13 +125,13 @@ int main()
            sum += dist[i];
        }
        int lo = mx, hi = sum,ans;
-       while(lo < hi)
+       while(lo <= hi)
        {
           int mid = (lo + hi)/2;
            if(solve(mid))
            {
                ans = mid;
-               hi = mid;
+               hi = mid - 1;
            }
            else lo = mid + 1;
 
@@ -156,7 +156,7 @@ int main()
 }
 /*
 critical case
-1 
+1
 6 5
 10
 5
