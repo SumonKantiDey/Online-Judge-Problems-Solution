@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+#define sqr(x) ((x)*(x))
+using namespace std;
+ 
+int main()
+{
+    int a,b,t;
+    cin >> t;
+    for(int cs = 1; cs <= t; cs++)
+    {
+        scanf("%d : %d",&a,&b);
+        double r = sqrt(sqr(a/2.0) + sqr(b/2.0));
+        double theta = 2.0 * atan((b/2.0)/(a/2.0));
+        double arc = r * theta;
+        double ratio = (400/(2 * arc + 2 * a));
+        printf("Case %d: %.7lf %.7lf\n",cs,a*ratio,b*ratio);
+ 
+    }
+}
+ 
