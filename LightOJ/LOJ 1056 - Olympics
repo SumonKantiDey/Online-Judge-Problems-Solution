@@ -16,5 +16,6 @@ int main()
         printf("Case %d: %.7lf %.7lf\n",cs,a*ratio,b*ratio);
  
     }
+    return 0;
 }
  
