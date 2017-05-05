@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef pair< int, int > pii;
+const int MAX = 1024;
+const int INF = 0x3f3f3f3f;
+vector< pii > G[MAX];
+int d1[MAX],d2[MAX];
+void dijkstra1(int start) {
+int u, v, i, c, w;
+priority_queue< pii, vector< pii >, greater< pii > > Q;
+memset(d1, 0x3f, sizeof (d1));
+Q.push(pii(0, start));///(weight,start) send
+d1[start] = 0;
+while(!Q.empty()) {
+    u = Q.top().second; // node
+    c = Q.top().first; // node cost so far
+    Q.pop(); // remove the top item.
+
+    if(d1[u] < c) continue;
+    for(i = 0; i < G[u].size(); i++) {
+        v = G[u][i].first; // node
+        w = G[u][i].second; // edge weight
+        if(d1[v] > d1[u] + w) {
+            d1[v] = d1[u] + w;
+            Q.push(pii(d1[v], v));
+        }
+    }
+}
+}
+
+void dijkstra2(int start) {
+int u, v, i, c, w;
+priority_queue< pii, vector< pii >, greater< pii > > Q;
+memset(d2, 0x3f, sizeof (d2));
+Q.push(pii(0, start));///(weight,start) send
+d2[start] = 0;
+while(!Q.empty()) {
+    u = Q.top().second; // node
+    c = Q.top().first; // node cost so far
+    Q.pop(); // remove the top item.
+
+    if(d2[u] < c) continue;
+    for(i = 0; i < G[u].size(); i++) {
+        v = G[u][i].first; // node
+        w = G[u][i].second; // edge weight
+        if(d2[v] > d2[u] + w) {
+            d2[v] = d2[u] + w;
+            Q.push(pii(d2[v], v));
+        }
+    }
+}
+}
+
+int main() {
+int n, e, i, u, v,st,en,t,mx;
+scanf("%d",&t);
+for(int cs = 1; cs <= t; cs++){
+    mx = 0;
+   scanf("%d %d", &n, &e);
+    for(i = 0; i <= n; i++) G[i].clear();
+    for(i = 0; i < e; i++) {
+        scanf("%d %d", &u, &v);
+        G[u].push_back(pii(v, 1));
+        G[v].push_back(pii(u, 1)); // only if bi-directional
+    }
+    scanf("%d %d", &st,&en);
+    dijkstra1(st);
+    dijkstra2(en);
+    for(i = 0; i <n; i++) {
+       // cout << d1[i] << " << " << d2[i] <<endl;
+        mx = max(mx,(d1[i] + d2[i]));
+    }
+   printf("Case %d: %d\n",cs,mx);
+}
+
+return 0;
+}
