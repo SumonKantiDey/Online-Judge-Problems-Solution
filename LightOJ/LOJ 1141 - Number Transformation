@@ -1,0 +1,73 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define srt 100005
+int mn = 1e9;
+bool ara[srt];
+int level[10005];
+vector<int>adj[100005];
+int cnt,n,m;
+void seive()
+{
+    memset(ara,0,sizeof(ara));
+    for(int i=2; i<=srt;i++)
+    {
+        if(ara[i] == 0)
+        {
+        ara[i] = 1;
+         for(int j=i*2; j<=srt; j=i+j)
+          {
+           adj[j].push_back(i);
+           ara[j] = 1;
+          }
+        }
+    }
+
+}
+
+int bfs(int s)
+{
+    memset(level, -1, sizeof level);
+    queue<int>q;
+    q.push(s);
+    level[s] = 0;
+    while(!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+        if(u == m){
+            return level[u];
+        }
+
+        for(int i = 0; i < adj[u].size(); i++)
+        {
+            int v = adj[u][i];
+            if(v+u > m) continue;
+            if(v+u <= m && level[v+u] == -1)
+            {
+                level[v+u] = level[u] + 1;
+                //cout << v+u << " " << level[v+u] << endl;
+                q.push(v + u);
+            }
+        }
+    }
+    return -1;
+}
+
+int main()
+{
+    seive();
+    int t;
+    scanf("%d",&t);
+    for(int cs = 1; cs <= t; cs++)
+    {
+        scanf("%d%d",&n,&m);
+        int res = bfs(n);
+
+        if(res == -1)
+        {
+            printf("Case %d: -1\n",cs);
+        }
+        else printf("Case %d: %d\n",cs, res);
+    }
+    return 0;
+}
