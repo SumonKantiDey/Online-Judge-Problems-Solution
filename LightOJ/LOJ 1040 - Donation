@@ -56,7 +56,7 @@ int main()
             get.w = w;
             e.push_back(get);
         }
-
+ 
       }
     }
     if(n == 1)
@@ -74,7 +74,7 @@ int main()
     else{
         printf("Case %d: %d\n",cs,total_cost - ans);
     }
-
+ 
 //    for(int i=0; i<mst_tree.size(); i++){
 //        cout<<"("<<mst_tree[i].u<<" , "<<mst_tree[i].v<<") : "<<mst_tree[i].w<<endl;
 //    }
@@ -83,3 +83,4 @@ int main()
     }
  return 0;
 }
+ 
