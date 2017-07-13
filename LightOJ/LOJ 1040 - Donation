@@ -1,0 +1,85 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int MAX = 3005;
+int par[MAX];
+struct edge{
+   int u,v,w;
+   bool operator < (const edge & p)const
+   {
+       return w < p.w;
+   }
+};
+vector<edge>e;
+vector<edge >mst_tree;
+int findset(int r)
+{
+    if(par[r] == r)return r;
+    return par[r] = findset(par[r]);
+}
+int kruskal(int n)
+{
+    sort(e.begin(),e.end());
+    for(int i=0; i<=n; i++)par[i] = i;
+    int cnt = 0,cost = 0;
+    for(int i=0; i<(int)e.size(); i++){
+        int u = findset(e[i].u);
+        int v = findset(e[i].v);
+        if(u != v){
+        mst_tree.push_back(e[i]);
+        par[u] = v;
+        cnt++;
+        cost += e[i].w;
+        }
+        if(cnt == n-1) return cost;
+    }
+    return -1;
+}
+int main()
+{
+    int t;
+    cin >> t;
+    for(int cs = 1; cs <= t; cs++){
+    int n,total_cost = 0;
+    cin>>n;
+    for(int i=1; i <= n; i++)
+    {
+     for(int j = 1; j <= n; j++)
+      {
+        int w;
+        cin >> w;
+        total_cost += w;
+        if(i != j && w)
+        {
+            edge get;
+            get.u = i;
+            get.v = j;
+            get.w = w;
+            e.push_back(get);
+        }
+
+      }
+    }
+    if(n == 1)
+    {
+         printf("Case %d: %d\n",cs,total_cost);
+          e.clear();
+          mst_tree.clear();
+          continue;
+    }
+    int ans = kruskal(n);
+    if(ans == -1)
+    {
+        printf("Case %d: -1\n",cs);
+    }
+    else{
+        printf("Case %d: %d\n",cs,total_cost - ans);
+    }
+
+//    for(int i=0; i<mst_tree.size(); i++){
+//        cout<<"("<<mst_tree[i].u<<" , "<<mst_tree[i].v<<") : "<<mst_tree[i].w<<endl;
+//    }
+    e.clear();
+    mst_tree.clear();
+    }
+ return 0;
+}
