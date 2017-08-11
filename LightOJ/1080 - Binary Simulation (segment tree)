@@ -2,87 +2,83 @@
 using namespace std;
 #define MAX 100005
 #define hell 1e7
-char ara[MAX];
+char str[MAX];
 int tree[MAX*4]={0};
-void update_tree(int node,int a,int b,int i,int j)
-{
-  if(a>b || a>j || b<i)//Curent segment is not within range[i j]
-  return;
-  if(a >= i && b<=j)//segment is fully within range[i j]
-  {
-     tree[node]++;
-     return ;
-  }
-  update_tree(node*2,a,(a+b)/2,i,j);
-  update_tree(node*2 + 1,(a+b)/2 + 1,b,i,j);
+void update(int node,int st,int en,int i,int j){
+     if(i > en || j < st) return;
+     if(st >= i && j>= en)
+     {
+         tree[node]++;
+         return;
+     }
+     int left = node * 2;
+     int right = node * 2 + 1;
+     int mid = (st + en )/2;
+     update(left,st,mid,i,j);
+     update(right,mid+1,en,i,j);
 }
-void query_tree(int node,int a,int b,int pos)
+
+void query(int node,int st,int en,int pos)
 {
+    if(pos < st || en < pos) return;
+    if(tree[node] != 0)
+    {
+        if(st != en)
+        {
+            tree[node * 2] += tree[node];
+            tree[node*2 + 1] += tree[node];
+            tree[node] = 0;
+        }
+    }
+    if(st == en)
+    {
+        if(tree[node] % 2 == 1)
+        {
+            if(str[st] == '1') str[st] = '0';
+            else  str[st] = '1';
+        }
+        tree[node] = 0;
+        return;
 
-  if(tree[node] != 0)
-  {
-      if(a != b)//when a and b not leaf node
-      {
-      tree[node*2] +=tree[node];//Define child as lazy
-      tree[node*2 + 1] +=tree[node];//Define child as lazy
-       tree[node] = 0;//reset here
-      }
-
-  }
-   if(a>pos || b<pos)
-    return ;
-  if(a == b){
-      if(tree[node] %2 ==1)//when a and b not leaf node
-      {
-          if(ara[a] == '1')ara[a]='0';
-          else ara[a] ='1';
-      }
-      tree[node] = 0;//reset here
-      return ;
-      }
-  query_tree(node*2,a,(a+b)/2,pos);//query left child
-  query_tree(node*2 + 1,(a+b)/2 + 1,b,pos);//query right child
+    }
+    int left = 2 * node;
+    int right = 2 * node + 1;
+    int mid = (st + en) /2;
+    query(left,st,mid,pos);
+    query(right,mid+1,en,pos);
 
 }
+
 int main()
 {
- // cout<<hell<<endl;
-  int n,tt,qq,us,ue,Q,cs=0;
-  char ch;
-  cin>>tt;
-  while(tt--){
-  scanf("%s",&ara);
-  int n = strlen(ara);
- for(int i=0; i<n*4; i++)tree[i]=0;
-  //cout<<n<<endl;
-  cin>>qq;
-  printf("Case %d:\n",++cs);
-  while(qq--){
- // cin>>ch;
-  scanf(" %c",&ch);
-  if(ch == 'I'){
-      scanf("%d%d",&us,&ue);
-      update_tree(1,0,n-1,us-1,ue-1);
-//        for(int i=0; i<20; i++){
-//            cout<<tree[i]<<" ";
-//        }
-//        cout<<endl;
-  }
-  else if(ch == 'Q'){
-      scanf("%d",&Q);
-     query_tree(1,0,n-1,Q-1);
-//         for(int i=0; i<20; i++){
-//            cout<<tree[i]<<" ";
-//        }
-//        cout<<endl;
+    int t;
+    scanf("%d",&t);
+    for(int cs = 1; cs <= t; cs++)
+    {
+        int q,len;
+        memset(tree,0,sizeof(tree));
+        scanf("%s",str);
+        len = strlen(str);
+        scanf("%d",&q);
+        printf("Case %d:\n",cs);
+        while(q--){
+            char c;
+            int n1,n2;
+            scanf(" %c",&c);
+            if(c == 'I'){
+                scanf("%d%d",&n1,&n2);
+                update(1,0,len-1,n1-1,n2-1);
+                //for(int i = 0; i <= 20; i++) cout << tree[i] << " ";
+            }
+            if(c == 'Q'){
+                int pos;
+                scanf("%d",&pos);
+                query(1,0,len-1,pos-1);
+                printf("%c\n",str[pos-1]);
+            }
+        }
 
-     printf("%c\n",ara[Q-1]);
-  }
-  }
-  }
+    }
 
   return 0;
 }
-
-
-
