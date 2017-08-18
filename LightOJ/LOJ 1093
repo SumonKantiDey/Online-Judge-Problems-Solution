@@ -1,0 +1,78 @@
+///http://lightoj.com/volume_showproblem.php?problem=1093
+#include<bits/stdc++.h>
+
+using namespace std;
+#define MX 100005
+const int inf = (1 << 28);
+
+struct data{
+    int mxx,mnn;
+}Tree[MX*4];
+
+int arr[MX],max_ans = 0,N,D;
+void build(int node,int st,int ed)
+{
+    if(st == ed)
+    {
+        Tree[node].mxx = arr[st];
+        Tree[node].mnn = arr[st];
+        return;
+    }
+    int left = node*2;
+    int right = node*2 + 1;
+    int mid = (st + ed) / 2;
+    build(left,st,mid);
+    build(right,mid+1,ed);
+    Tree[node].mxx = max(Tree[left].mxx,Tree[right].mxx);
+    Tree[node].mnn = min(Tree[left].mnn,Tree[right].mnn);
+}
+data query(int node,int st,int ed,int i,int j)
+{
+    if(i > ed || j < st){
+       data tmp;
+       tmp.mxx = 0;
+       tmp.mnn = inf;
+       return tmp;
+    }
+    if(st >= i && ed <= j){
+        return Tree[node];
+    }
+    int mid = (st + ed) / 2;
+    int left = node*2;
+    int right = node*2 + 1;
+    data x = query(left,st,mid,i,j);
+    data y = query(right,mid + 1,ed,i,j);
+    int mx = 0,mn = inf;
+    mx = max(mx,max(x.mxx,y.mxx));
+    mn = min(mn,min(x.mnn,y.mnn));
+    data ret;
+    ret.mxx = mx;
+    ret.mnn = mn;
+    return ret;
+}
+int SearchAns(int st,int ed)
+{
+    if(ed > N) return 0;
+    data Qu = query(1,1,N,st,ed);
+    int res = Qu.mxx - Qu.mnn;
+    max_ans = max(max_ans,res);
+    SearchAns(st + 1,ed + 1);
+    return max_ans;
+}
+int main()
+{
+    int T;
+    scanf("%d",&T);
+    for(int cs = 1; cs <= T; cs++){
+        memset(arr,0,sizeof(arr));
+        max_ans = 0;
+        scanf("%d%d",&N,&D);
+        for(int i = 1; i <= N; i++){
+            scanf("%d",&arr[i]);
+        }
+        build(1,1,N);
+        int ans = SearchAns(1,D);
+        printf("Case %d: %d\n",cs,ans);
+    }
+    return 0;
+}
