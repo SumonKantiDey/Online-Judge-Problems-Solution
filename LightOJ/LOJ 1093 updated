@@ -1,0 +1,100 @@
+//http://lightoj.com/volume_showproblem.php?problem=1093
+#include<bits/stdc++.h>
+using namespace std;
+const int sz = 100005;
+const int inf = (1 << 28);
+template<typename T> T MIN3(T a, T b,T c) {return min(a,min(b,c));}
+template<typename T> T MAX3(T a, T b,T c) {return max(a,max(b,c));}
+
+struct data{
+    int mxx,mnn;
+}BLOCK[400];
+
+int arr[sz],N,D;
+
+int getId(int indx,int blockSZ)
+{
+    return indx / blockSZ;
+}
+
+void init(int sz)
+{
+    for(int i= 0 ; i <= sz; i++){
+        BLOCK[i].mxx = 0;
+        BLOCK[i].mnn = inf;
+    }
+}
+void update(int val,int indx,int blockSZ)
+{
+    int id = getId(indx,blockSZ);
+    BLOCK[id].mxx = max(BLOCK[id].mxx,val);
+    BLOCK[id].mnn = min(BLOCK[id].mnn,val);
+}
+
+
+int query(int L,int R,int blockSZ)
+{
+    int lid = getId(L,blockSZ);
+    int rid = getId(R,blockSZ);
+    int mx = 0,mn = inf;
+    if(lid == rid)
+    {
+        for(int i = L; i <= R; i++){
+            mx = max(mx,arr[i]);
+            mn = min(mn,arr[i]);
+            return mx - mn;
+        }
+    }
+    int mx1 = 0,mn1 = inf,mx2 = 0,mn2 = inf;
+    for(int i = L; i < (lid + 1)*blockSZ; i++){
+         mx = max(mx,arr[i]);
+         mn = min(mn,arr[i]);
+    }
+    for(int i = lid + 1; i < rid; i++){
+         mx1 = max(mx1,BLOCK[i].mxx);
+         mn1 = min(mn1,BLOCK[i].mnn);
+    }
+    for(int i = rid*blockSZ; i <= R; i++){
+         mx2 = max(mx2,arr[i]);
+         mn2 = min(mn2,arr[i]);
+    }
+    int all_mx = MAX3(mx,mx1,mx2);
+    int all_min = MIN3(mn,mn1,mn2);
+    return all_mx - all_min;
+}
+int ans;
+int search(int st,int ed,int blockSZ)
+{
+    if(ed >= N) return 0;
+    int res = query(st,ed,blockSZ);
+    ans = max(ans,res);
+    search(st + 1,ed + 1,blockSZ);
+    return ans;
+}
+
+int main()
+{
+    int T,x;
+    scanf("%d",&T);
+    for(int cs = 1; cs <= T; cs++){
+        memset(arr,0,sizeof(arr));
+        scanf("%d %d",&N,&D);
+        int blockSZ = sqrt(N);
+        init(blockSZ);
+        for(int i = 0; i < N; i++){
+            scanf("%d",&x);
+            arr[i] = x;
+            update(x,i,blockSZ);
+        }
+        if(D <= 1) {
+           printf("Case %d: 0\n",cs);
+           continue;
+        }
+        else{
+           ans = 0;
+           int cal = search(0,D-1,blockSZ);
+           printf("Case %d: %d\n",cs,cal);
+        }
+    }
+    return 0;
+}
