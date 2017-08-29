@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define MOD 1000000007
+int BIT[100005], arr[100005],tmp[100005];
+map<int,int>mp;
+int n;
+void update(int x, int val)//get next node
+{
+    while(x <= n){
+        BIT[x] = (BIT[x] + val)%MOD;
+        x += x & (-x);
+      }
+}
+ 
+int query(int x)//get pnarent node
+{
+    int sum = 0;
+    while(x > 0){
+        sum = (sum + BIT[x])%MOD;
+        x -= x & (-x);
+    }
+    return sum;
+}
+ 
+ 
+int main()
+{
+    int T;
+    scanf("%d",&T);
+    for(int cs = 1; cs <= T; cs++){
+        memset(arr,0,sizeof(arr));
+        memset(tmp,0,sizeof(tmp));
+        memset(BIT,0,sizeof(BIT));
+        mp.clear();
+        scanf("%d",&n);
+        for(int i = 1; i <= n; i++){
+            scanf("%d",&arr[i]);
+            tmp[i] = arr[i];
+        }
+        sort(tmp+1,tmp+n+1);
+        int pos = 0;
+ 
+        for(int i = 1; i <= n; i++){
+            if(mp.count(tmp[i]) == 0){
+               mp[tmp[i]] = ++pos;
+            }
+        }
+       int ans = 0,res,position;
+       for(int i = 1; i <= n; i++){
+           position = mp[arr[i]];
+           res = query(position - 1) + 1;
+          // cout << position << " " << res << endl;
+           ans = (ans + res)%MOD;
+           update(position,res);
+       }
+       printf("Case %d: %d\n",cs,ans);
+ 
+    }
+    return 0;
+}
