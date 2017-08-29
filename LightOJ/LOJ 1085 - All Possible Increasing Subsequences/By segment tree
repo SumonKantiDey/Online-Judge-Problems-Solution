@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define pii pair <int,int>
+#define xx first
+#define yy second
+#define MOD 1000000007
+vector<pii>v;
+int arr[100005];
+int tree[400005];
+int n;
+bool cmp(pii a,pii b)
+{
+    if(a.xx == b.xx) return a.yy > b.yy;
+    return a.xx < b.xx;
+}
+int find_sol(int node,int st,int ed,int l,int r)
+{
+    if(ed < l || r < st) return 0;
+    if(l <= st && ed <= r) return tree[node];
+    int mid = (st + ed)/2;
+    return (find_sol(node*2,st,mid,l,r) + find_sol(node*2+1,mid+1,ed,l,r))%MOD;
+}
+void update(int node,int st,int ed,int pos,int val)
+{
+    if(ed < st) return;
+    if(st == pos && ed == pos) {
+       tree[node] = val;
+       return;
+    }
+    int mid = (st+ed)/2;
+    if(pos <= mid){
+       update(node*2,st,mid,pos,val);
+    }
+    else update(node*2+1,mid+1,ed,pos,val);
+    tree[node] = (tree[node*2] + tree[node*2+1])%MOD;
+}
+int main()
+{
+    int T;
+    scanf("%d",&T);
+    for(int cs = 1; cs <= T; cs++){
+        memset(arr,0,sizeof(arr));
+        memset(tree,0,sizeof(tree));
+        v.clear();
+        scanf("%d",&n);
+        for(int i = 1; i <= n; i++){
+            int num;
+            scanf("%d",&num);
+            v.push_back(make_pair(num,i));
+        }
+        sort(v.begin(),v.end(),cmp);
+        for(int i = 0; i < v.size(); i++){
+            int val = find_sol(1,1,n,1,v[i].yy);
+            //cout << val << endl;
+            update(1,1,n,v[i].yy,val+1);
+        }
+        printf("Case %d: %d\n",cs,tree[1]);
+    }
+    return 0;
+}
+ 
